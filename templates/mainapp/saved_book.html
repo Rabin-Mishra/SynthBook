@@ -1,0 +1,110 @@
+{% extends "mainapp/layout.html" %} 
+{% load static %} 
+{% block title %} 
+Library 
+{% endblock title %} 
+{% block head %}
+<link rel="stylesheet" href="{% static 'mainapp/css/saved_book.css' %}">
+{% endblock head %} 
+{% block main %}
+
+{% if num == 0 %}
+<!-- Empty State -->
+<div class="container">
+    <div class="empty-state">
+        <span class="empty-icon">📚</span>
+        <h3 class="empty-title">Your library is empty</h3>
+        <p class="empty-message">Your library is empty. Start exploring and save books you love!</p>
+        <a href="/explore_books/" class="btn btn-warning" style="padding: 12px 30px; font-size: 1rem;">Explore Books</a>
+    </div>
+</div>
+{% else %}
+<!-- Header with Title and Count -->
+<div class="saved-header text-center py-5 mb-5">
+    <h1 style="font-family: 'Lobster', cursive; color: var(--accent-primary); font-size: 3rem;">Saved for Later</h1>
+    <p style="color: var(--text-medium); font-family: 'Sora', sans-serif; font-size: 1.1rem; margin-top: 10px;">You have saved {{ num }} book{{ num|pluralize }} to read later</p>
+</div>
+
+<!-- Responsive Book Grid -->
+<div class="container my-5 fade-in-section">
+    <div class="row g-4">
+        {% for book in page_obj %}
+        <div id="book-{{book.book_id}}" class="col-12 col-sm-6 col-md-4 col-lg-3 d-flex align-items-stretch">
+            <div class="card w-100 mb-4">
+                <div class="row no-gutters h-100 flex-column">
+                    <div class="card-img-wrapper" style="position: relative; overflow: hidden;">
+                        <img class="card-img-top w-100" src="{{book.image_url}}" alt="book Card" style="height: 280px; object-fit: cover;">
+                        <div class="card-hover-overlay">
+                            <span class="overlay-text">View Details</span>
+                        </div>
+                    </div>
+                    <div class="card-body d-flex flex-column text-center p-3">
+                        <h5 class="card-title text-truncate" style="font-family: 'Sora', sans-serif; font-size: 1.05rem; color: var(--text-dark); font-weight: 600; margin-bottom: 6px;">{{ book.original_title }}</h5>
+                        <p class="card-text text-muted mb-4" style="font-family: 'Sora', sans-serif; font-size: 0.88rem; color: var(--text-medium) !important; font-weight: normal;">by {{ book.authors|truncatechars:20 }}</p>
+                        
+                        <div class="mt-auto">
+                            <a href="javascript:;" onclick='bookDetails(this)' class="btn btn-warning w-100 mb-2" data-book-id="{{ book.book_id }}" style="font-size: 0.85rem; padding: 8px;">More Details</a>
+                            
+                            {% if user.is_authenticated %}
+                            <div class='rating-block w-100 mb-2' id='rating-block-{{ book.book_id }}' onmouseover="rateStart(this)" onclick='rateBook(this)' onmouseout='finishRate(this)' data-book-id="{{ book.book_id }}" style="font-size: 0.85rem; padding: 8px;">
+                                <div id='button-text-{{ book.book_id }}'>Rate <i class="fa fa-heart" style="color:red"></i> This Book</div>
+                                <div class='rateYo' id='rate-{{ book.book_id }}'></div>
+                            </div>
+                            <a href="{% url 'account_signup' %}" class='rating-block w-100 btn mb-2 d-block text-decoration-none' style="font-size: 0.85rem; padding: 8px; color: inherit; background-color: #31c2cf;">
+                                <div id='button-text'>Rate <i class="fa fa-heart" style="color:red"></i> This Book</div>
+                            </a>
+                            {% endif %}
+                            
+                            <a href="javascript:;" class="btn remove w-100 mt-1" onclick='removeBook(this)' data-book-id="{{ book.book_id }}">Remove from List</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Pagination controls -->
+<nav aria-label="..." class="my-5">
+    <ul class="pagination justify-content-center">
+        {% if page_obj.has_previous %}
+        <li class="page-item"><a class="btn btn-warning me-2" href="?page={{ page_obj.previous_page_number }}">&laquo; Previous</a></li>
+        {% endif %}
+
+        <li class="page-item"><span class="btn btn-outline-secondary disabled" style="border-radius: 20px; font-weight: 600; padding: 8px 20px;">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+            </span></li>
+            
+        {% if page_obj.has_next %}
+        <li class="page-item"><a class="btn btn-warning ms-2" href="?page={{ page_obj.next_page_number }}">Next &raquo;</a></li>
+        {% endif %}
+    </ul>
+</nav>
+{% endif %}
+
+{% endblock main %} 
+{% block script %}
+<script>
+    function removeBook(obj) {
+        var bookid = obj.getAttribute('data-book-id');
+        console.log(bookid)
+        $.ajax({
+            data: {
+                'bookid': bookid,
+                'csrfmiddlewaretoken': Cookies.get('csrftoken')
+            },
+            dataType: 'json',
+            url: '{%url "remove_saved_book" %}',
+            type: 'POST',
+            success: function(response) {
+                $("#book-" + bookid).remove();
+            },
+            error: function(response) {
+                console.log(response);
+            }
+        })
+
+    }
+</script>
+{% endblock script %}

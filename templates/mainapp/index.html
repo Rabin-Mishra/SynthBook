@@ -1,0 +1,500 @@
+{% extends "mainapp/layout.html" %}
+{% load static %}
+{% block title %} Home {% endblock title %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'mainapp/css/index.css' %}">
+{% endblock head %}
+
+{% block main %}
+
+<!-- preloader -->
+<div class="preloader-container">
+    <div class="spinner">
+        <div class="rec">
+            <div class="rect1"></div>
+            <div class="rect2"></div>
+            <div class="rect3"></div>
+            <div class="rect4"></div>
+            <div class="rect5"></div>
+        </div>
+        <div class="stand"> </div>
+    </div>
+</div>
+
+<!-- ================= BANNER SLIDES ================= -->
+<section class="banner">
+    <div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel" data-interval="4000">
+        <div class="carousel-inner" role="listbox">
+            <div class="carousel-item active">
+                <img src="/static/mainapp/png/banner/SynthBookBanner.png" alt="SynthBook Banner">
+            </div>
+            <div class="carousel-item">
+                <img src="{% static 'mainapp/png/banner/1.webp' %}" alt="Slide 1">
+            </div>
+            <div class="carousel-item">
+                <img src="{% static 'mainapp/png/banner/2.webp' %}" alt="Slide 2">
+            </div>
+            <div class="carousel-item">
+                <img src="{% static 'mainapp/png/banner/3.webp' %}" alt="Slide 3">
+            </div>
+            <div class="carousel-item">
+                <img src="{% static 'mainapp/png/banner/4.webp' %}" alt="Slide 4">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================= CTA HEADER SECTION ================= -->
+<div class="index-cta">
+  <h2>Discover Your Next Favorite Book</h2>
+  <p>
+    Rate books you love and let SynthBook's machine learning engine find your perfect next read dynamically.
+  </p>
+  <div class="cta-buttons">
+    <a href="/explore_books/" class="cta-btn-primary">Explore Books →</a>
+    <a href="/book_recommendations/" class="cta-btn-secondary">Get Recommendations →</a>
+  </div>
+</div>
+
+<!-- ================= MAIN CONTAINER ================= -->
+<div class="index-container">
+
+  <!-- ================= READ GENRE WISE ================= -->
+  <div class="fade-in-section">
+    <div class="shelf-header">
+      <div class="shelf-header-text">
+        <h3>Read Genre Wise</h3>
+        <p>Explore different worlds structured by categories</p>
+      </div>
+      <div class="shelf-nav-buttons">
+        <button onclick="document.getElementById('genre-shelf').scrollBy({ left: -280, behavior: 'smooth' })" class="shelf-nav-btn" aria-label="Previous Genres">
+          <i class="fa-solid fa-chevron-left"></i>
+        </button>
+        <button onclick="document.getElementById('genre-shelf').scrollBy({ left: 280, behavior: 'smooth' })" class="shelf-nav-btn" aria-label="Next Genres">
+          <i class="fa-solid fa-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Genre Horizontal Snap Scroll -->
+    <div id="genre-shelf" class="horizontal-shelf">
+      
+      <!-- Classics -->
+      <a href="{% url 'genre_books' genre='Classics' %}" class="genre-card">
+        <img src="{% static 'mainapp/png/genre/40.webp' %}" class="genre-card-img" alt="Classics">
+        <div class="genre-card-overlay"></div>
+        <div class="genre-card-content">
+          <h4>Classics</h4>
+          <p>Timeless Masterpieces</p>
+        </div>
+      </a>
+
+      <!-- Fantasy -->
+      <a href="{% url 'genre_books' genre='Fantasy' %}" class="genre-card">
+        <img src="{% static 'mainapp/png/genre/12.webp' %}" class="genre-card-img" alt="Fantasy">
+        <div class="genre-card-overlay"></div>
+        <div class="genre-card-content">
+          <h4>Fantasy</h4>
+          <p>Epic Magical Realms</p>
+        </div>
+      </a>
+
+      <!-- Mystery -->
+      <a href="{% url 'genre_books' genre='Mystery' %}" class="genre-card">
+        <img src="{% static 'mainapp/png/genre/23.webp' %}" class="genre-card-img" alt="Mystery">
+        <div class="genre-card-overlay"></div>
+        <div class="genre-card-content">
+          <h4>Mystery</h4>
+          <p>Unravel Dark Shadows</p>
+        </div>
+      </a>
+
+      <!-- Poetry -->
+      <a href="{% url 'genre_books' genre='Poetry' %}" class="genre-card">
+        <img src="{% static 'mainapp/png/genre/27.webp' %}" class="genre-card-img" alt="Poetry">
+        <div class="genre-card-overlay"></div>
+        <div class="genre-card-content">
+          <h4>Poetry</h4>
+          <p>Verse & Deep Emotion</p>
+        </div>
+      </a>
+
+      <!-- Science -->
+      <a href="{% url 'genre_books' genre='Science' %}" class="genre-card">
+        <img src="{% static 'mainapp/png/genre/31.webp' %}" class="genre-card-img" alt="Science">
+        <div class="genre-card-overlay"></div>
+        <div class="genre-card-content">
+          <h4>Sci-Fi</h4>
+          <p>Echoes In The Void</p>
+        </div>
+      </a>
+
+      <!-- Psychology -->
+      <a href="{% url 'genre_books' genre='Psychology' %}" class="genre-card">
+        <img src="{% static 'mainapp/png/genre/28.webp' %}" class="genre-card-img" alt="Psychology">
+        <div class="genre-card-overlay"></div>
+        <div class="genre-card-content">
+          <h4>Psychology</h4>
+          <p>Understanding the Mind</p>
+        </div>
+      </a>
+
+      <!-- Biography -->
+      <a href="{% url 'genre_books' genre='biography' %}" class="genre-card">
+        <img src="{% static 'mainapp/png/genre/2.webp' %}" class="genre-card-img" alt="Biography">
+        <div class="genre-card-overlay"></div>
+        <div class="genre-card-content">
+          <h4>Biography</h4>
+          <p>Stories of Real Lives</p>
+        </div>
+      </a>
+
+      <!-- Business -->
+      <a href="{% url 'genre_books' genre='business' %}" class="genre-card">
+        <img src="{% static 'mainapp/png/genre/3.webp' %}" class="genre-card-img" alt="Business">
+        <div class="genre-card-overlay"></div>
+        <div class="genre-card-content">
+          <h4>Business</h4>
+          <p>Strategies & Success</p>
+        </div>
+      </a>
+
+    </div>
+  </div>
+
+
+  <!-- ================= DYNAMIC CAROUSEL 1: TRENDING THIS WEEK ================= -->
+  <div class="fade-in-section">
+    <div class="shelf-header">
+      <div class="shelf-header-text">
+        <h3>Trending This Week</h3>
+        <p>Most read and rated books across the community</p>
+      </div>
+      <div class="shelf-nav-buttons">
+        <button onclick="document.getElementById('trending-shelf').scrollBy({ left: -280, behavior: 'smooth' })" class="shelf-nav-btn" aria-label="Scroll Left">
+          <i class="fa-solid fa-chevron-left"></i>
+        </button>
+        <button onclick="document.getElementById('trending-shelf').scrollBy({ left: 280, behavior: 'smooth' })" class="shelf-nav-btn" aria-label="Scroll Right">
+          <i class="fa-solid fa-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Shelf containing actual book cards -->
+    <div id="trending-shelf" class="horizontal-shelf">
+      {% for book in books|slice:":6" %}
+      <div class="book-card">
+        <div class="book-card-cover-wrapper">
+          <img src="{{ book.image_url }}" class="book-card-cover" alt="{{ book.original_title }} cover">
+          <div class="book-card-hover-overlay">
+            <span class="book-card-hover-badge">View Details</span>
+          </div>
+        </div>
+        <div class="book-card-details">
+          <div>
+            <h5 class="book-card-title" title="{{ book.original_title }}">{{ book.original_title }}</h5>
+            <p class="book-card-author">by {{ book.authors }}</p>
+            
+            <!-- Stars -->
+            <div class="book-card-rating">
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star-half-stroke"></i>
+              <span>4.7</span>
+            </div>
+          </div>
+          
+          <div class="book-card-actions">
+            {% if user.is_authenticated %}
+            <button class="book-card-rate-btn" id="rating-block-{{ book.book_id }}" onmouseover="rateStart(this)" onclick="rateBook(this)" onmouseout="finishRate(this)" data-book-id="{{ book.book_id }}">
+              <span id="button-text-{{ book.book_id }}" class="d-inline-flex align-items-center gap-1">
+                Rate <i class="fa-solid fa-heart" style="color:#ffffff"></i> This Book
+              </span>
+              <div class="rateYo" id="rate-{{ book.book_id }}"></div>
+            </button>
+            {% else %}
+            <a href="{% url 'account_signup' %}" class="book-card-rate-btn">
+              Rate <i class="fa-solid fa-heart" style="color:#ffffff"></i> This Book
+            </a>
+            {% endif %}
+            
+            <a href="javascript:;" onclick="bookDetails(this)" class="book-card-details-btn" data-book-id="{{ book.book_id }}">
+              View Details
+            </a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+
+  <!-- ================= STAFF COLLECTIONS GRID ================= -->
+  <div class="collections-grid fade-in-section">
+    <!-- Editor's Picks -->
+    <div class="collection-card collection-dark">
+      <span class="collection-tag">Editor's Choice</span>
+      <div>
+        <h3>Staff Picks: Curated Masterpieces</h3>
+        <p>
+          Our literary editors have gathered this month's highest-quality, critically-acclaimed works that redefined their genres.
+        </p>
+      </div>
+      <div class="collection-footer">
+        <a href="/explore_books/" class="collection-link">Browse Row <i class="fa-solid fa-arrow-right"></i></a>
+        <div class="collection-avatars">
+          <img src="{% static 'mainapp/png/genre/40.webp' %}" alt="book stack 1">
+          <img src="{% static 'mainapp/png/genre/12.webp' %}" alt="book stack 2">
+          <img src="{% static 'mainapp/png/genre/23.webp' %}" alt="book stack 3">
+        </div>
+      </div>
+    </div>
+
+    <!-- Spotlight picks -->
+    <div class="collection-card collection-terracotta">
+      <span class="collection-tag">ML Spotlight</span>
+      <div>
+        <h3>FunkSVD Collaborative Gems</h3>
+        <p>
+          These books are currently generating extremely high correlation recommendation weights matching your unique user profile.
+        </p>
+      </div>
+      <div class="collection-footer">
+        <a href="/book_recommendations/" class="collection-link">Get Yours <i class="fa-solid fa-arrow-right"></i></a>
+        <div class="collection-avatars">
+          <img src="{% static 'mainapp/png/genre/27.webp' %}" alt="book stack 1">
+          <img src="{% static 'mainapp/png/genre/28.webp' %}" alt="book stack 2">
+          <img src="{% static 'mainapp/png/genre/31.webp' %}" alt="book stack 3">
+        </div>
+      </div>
+    </div>
+
+    <!-- Database Info Block -->
+    <div class="collection-card collection-light">
+      <span class="collection-tag">Library Spotlight</span>
+      <div>
+        <h3 style="color:var(--bg-dark);">Our Active Catalog is Growing</h3>
+        <p>
+          Over millions of user ratings and reviews power our machine learning engines, delivering personalized literary matching.
+        </p>
+      </div>
+      <div class="collection-footer">
+        <a href="/explore_books/" class="collection-link">Search Books <i class="fa-solid fa-arrow-right"></i></a>
+        <div class="collection-avatars" style="opacity: 0.1;">
+          <img src="{% static 'mainapp/png/book.svg' %}" alt="decorative icon" style="width:50px; height:50px; border-radius:0; border:none; margin:0;">
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ================= DYNAMIC CAROUSEL 2: EPIC FANTASY FAVORITES ================= -->
+  <div class="fade-in-section">
+    <div class="shelf-header">
+      <div class="shelf-header-text">
+        <h3>Epic Fantasy Favorites</h3>
+        <p>High fantasy, sorcery, and magical sagas highly recommended by users</p>
+      </div>
+      <div class="shelf-nav-buttons">
+        <button onclick="document.getElementById('fantasy-shelf').scrollBy({ left: -280, behavior: 'smooth' })" class="shelf-nav-btn" aria-label="Scroll Left">
+          <i class="fa-solid fa-chevron-left"></i>
+        </button>
+        <button onclick="document.getElementById('fantasy-shelf').scrollBy({ left: 280, behavior: 'smooth' })" class="shelf-nav-btn" aria-label="Scroll Right">
+          <i class="fa-solid fa-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Shelf containing fantasy books -->
+    <div id="fantasy-shelf" class="horizontal-shelf">
+      {% for book in books|slice:"6:12" %}
+      <div class="book-card">
+        <div class="book-card-cover-wrapper">
+          <img src="{{ book.image_url }}" class="book-card-cover" alt="{{ book.original_title }} cover">
+          <div class="book-card-hover-overlay">
+            <span class="book-card-hover-badge">View Details</span>
+          </div>
+        </div>
+        <div class="book-card-details">
+          <div>
+            <h5 class="book-card-title" title="{{ book.original_title }}">{{ book.original_title }}</h5>
+            <p class="book-card-author">by {{ book.authors }}</p>
+            
+            <!-- Stars -->
+            <div class="book-card-rating">
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star-half-stroke"></i>
+              <span>4.6</span>
+            </div>
+          </div>
+          
+          <div class="book-card-actions">
+            {% if user.is_authenticated %}
+            <button class="book-card-rate-btn" id="rating-block-{{ book.book_id }}" onmouseover="rateStart(this)" onclick="rateBook(this)" onmouseout="finishRate(this)" data-book-id="{{ book.book_id }}">
+              <span id="button-text-{{ book.book_id }}" class="d-inline-flex align-items-center gap-1">
+                Rate <i class="fa-solid fa-heart" style="color:#ffffff"></i> This Book
+              </span>
+              <div class="rateYo" id="rate-{{ book.book_id }}"></div>
+            </button>
+            {% else %}
+            <a href="{% url 'account_signup' %}" class="book-card-rate-btn">
+              Rate <i class="fa-solid fa-heart" style="color:#ffffff"></i> This Book
+            </a>
+            {% endif %}
+            
+            <a href="javascript:;" onclick="bookDetails(this)" class="book-card-details-btn" data-book-id="{{ book.book_id }}">
+              View Details
+            </a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+
+  <!-- ================= DYNAMIC CAROUSEL 3: HIDDEN GEMS ================= -->
+  <div class="fade-in-section">
+    <div class="shelf-header">
+      <div class="shelf-header-text">
+        <h3>Hidden Gems</h3>
+        <p>Stunning underrated reads that deserve a permanent spot on your shelf</p>
+      </div>
+      <div class="shelf-nav-buttons">
+        <button onclick="document.getElementById('gems-shelf').scrollBy({ left: -280, behavior: 'smooth' })" class="shelf-nav-btn" aria-label="Scroll Left">
+          <i class="fa-solid fa-chevron-left"></i>
+        </button>
+        <button onclick="document.getElementById('gems-shelf').scrollBy({ left: 280, behavior: 'smooth' })" class="shelf-nav-btn" aria-label="Scroll Right">
+          <i class="fa-solid fa-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Shelf containing gems -->
+    <div id="gems-shelf" class="horizontal-shelf">
+      {% for book in books|slice:"12:18" %}
+      <div class="book-card">
+        <div class="book-card-cover-wrapper">
+          <img src="{{ book.image_url }}" class="book-card-cover" alt="{{ book.original_title }} cover">
+          <span class="just-added-badge">Just Added</span>
+          <div class="book-card-hover-overlay">
+            <span class="book-card-hover-badge">View Details</span>
+          </div>
+        </div>
+        <div class="book-card-details">
+          <div>
+            <h5 class="book-card-title" title="{{ book.original_title }}">{{ book.original_title }}</h5>
+            <p class="book-card-author">by {{ book.authors }}</p>
+            
+            <!-- Stars -->
+            <div class="book-card-rating">
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star-half-stroke"></i>
+              <span>4.5</span>
+            </div>
+          </div>
+          
+          <div class="book-card-actions">
+            {% if user.is_authenticated %}
+            <button class="book-card-rate-btn" id="rating-block-{{ book.book_id }}" onmouseover="rateStart(this)" onclick="rateBook(this)" onmouseout="finishRate(this)" data-book-id="{{ book.book_id }}">
+              <span id="button-text-{{ book.book_id }}" class="d-inline-flex align-items-center gap-1">
+                Rate <i class="fa-solid fa-heart" style="color:#ffffff"></i> This Book
+              </span>
+              <div class="rateYo" id="rate-{{ book.book_id }}"></div>
+            </button>
+            {% else %}
+            <a href="{% url 'account_signup' %}" class="book-card-rate-btn">
+              Rate <i class="fa-solid fa-heart" style="color:#ffffff"></i> This Book
+            </a>
+            {% endif %}
+            
+            <a href="javascript:;" onclick="bookDetails(this)" class="book-card-details-btn" data-book-id="{{ book.book_id }}">
+              View Details
+            </a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+
+  <!-- ================= STATS BAR CONTAINER (FROM PHOTO REFERENCE) ================= -->
+  <div class="stats-bar">
+    <div class="stat">
+      <span class="stat-val">10,000+</span>
+      <span class="stat-lbl">Books in Library</span>
+    </div>
+    <div class="stat">
+      <span class="stat-val">6M+</span>
+      <span class="stat-lbl">User Ratings</span>
+    </div>
+    <div class="stat">
+      <span class="stat-val">40+</span>
+      <span class="stat-lbl">Literary Genres</span>
+    </div>
+    <div class="stat">
+      <span class="stat-val">FunkSVD</span>
+      <span class="stat-lbl">ML Powered Curation</span>
+    </div>
+  </div>
+
+</div>
+
+{% endblock main %}
+
+{% block script %}
+<script type="text/javascript">
+  /* preloader */
+  $(window).on('load', function () {
+    if (readCookie('referer') == null) {
+        $('.preloader-container').delay(700).fadeOut('slow');
+        createCookie('referer', 1, 0);
+    } else {
+        $('.preloader-container').hide();
+    }
+  });
+
+  /* functions to create and read cookies */
+  function createCookie(name, value, days) {
+      if (days) {
+          var date = new Date();
+          date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+          var expires = "; expires=" + date.toGMTString();
+      } else var expires = "";
+      document.cookie = name + "=" + value + expires + "; path=/";
+  }
+
+  function readCookie(name) {
+      var nameEQ = name + "=";
+      var ca = document.cookie.split(';');
+      for (var i = 0; i < ca.length; i++) {
+          var c = ca[i];
+          while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+          if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+      }
+      return null;
+  }
+
+  /* Fade in sections on scroll using IntersectionObserver */
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.fade-in-section').forEach(el => observer.observe(el));
+</script>
+{% endblock script %}

@@ -1,0 +1,567 @@
+<!doctype html> 
+{% load static %}
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+    <!-- fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@300&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Kalam&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@700&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <!-- font awesome ion-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- icon from google-->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <!-- Rating CSS -->
+    <!-- Reset styles -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.css">
+    <!-- css -->
+    <link rel="stylesheet" href="{% static 'mainapp/css/layout.css' %}">
+    <!-- icon -->
+    <link rel="icon" href="{% static 'mainapp/png/logo.webp' %}" />
+    <title>SynthBook{% block title %} - {% endblock title %}</title>
+    {% block head %} 
+    {% endblock head %}
+</head>
+
+<body>
+    <header>
+        <a name='top'>
+            <div id="topheader">
+                <nav class="navbar navbar-expand-md navbar-light">
+                    <a class="navbar-brand" href="/">
+                      <img src="/static/mainapp/png/SynthBookLogo.png"
+                           alt="SynthBook" height="42" style="object-fit:contain;">
+                    </a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                        <!-- Search Bar -->
+                        <div class="searchbar mr-md-4 mb-2 mb-md-0" id="searchdropdown" style="position: relative; min-width: 255px;">
+                            <input type="text" class="form-control" id="bookName" onkeyup="myFunction()" placeholder="🔍 Search books..." title="Search for books" style="width: 100%; border-radius: 20px; padding: 8px 16px;">
+                            <div class="dropdown-content" id="search-dropdown">
+                            </div>
+                        </div>
+                        <!-- End Search Bar -->
+                        <ul class="navbar-nav text-center">
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'index' %}">
+                                    <i class="nav-icon-s fa fa-home fa-2x" aria-hidden="true"></i><br>Home
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'explore_books' %}">
+                                    <i class="nav-icon-s fa fa-globe fa-2x" aria-hidden="true"></i><br>Explore
+                                </a>
+                            </li>
+                            {% if user.is_authenticated %}
+                            <li class="nav-item">
+                                <div class="dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="nav-icon-s fa fa-bookmark fa-2x" aria-hidden="true"></i><br>Library
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+                                        <a class="dropdown-item" href="{% url 'book_recommendations' %}"><i class="material-icons" style="vertical-align: -6px;">auto_stories</i>&nbsp; Your Read</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="{% url 'to_read' %}"><i class="material-icons" style="vertical-align: -6px;">push_pin</i>&nbsp; Saved for Later</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="{% url 'read_books' %}"><i class="material-icons" style="vertical-align: -6px;">star</i>&nbsp; Rated Books</a>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'account_logout' %}">
+                                    <i class="nav-icon-s fa fa-sign-in fa-2x" aria-hidden="true"></i><br>Logout
+                                </a>
+                            </li>
+                            {% else %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'account_login' %}">
+                                    <i class="nav-icon-s fa fa-sign-in fa-2x" aria-hidden="true"></i><br>Login
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'account_signup' %}">
+                                    <i class="nav-icon-s fa fa-user fa-2x" aria-hidden="true"></i><br>Signup
+                                </a>
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+    </header>
+    <!-- Messages -->
+    {% for message in messages %}
+    <div class="alert {{ message.tags }} alert-dismissible text-center" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button> 
+        {{ message }}
+    </div>
+    {% endfor %}
+    <!-- Bootstrap modal -->
+    <!-- Centered Premium Modal -->
+    <!-- Centered Premium Modal -->
+    <div class="modal fade" id="bookModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content premium-modal-content border-0">
+                <div class="modal-header premium-modal-header d-flex align-items-center justify-content-between">
+                    <h4 class="modal-title font-sora font-bold text-plum-dark" id="booktitle" style="font-family:'Sora',sans-serif; font-weight:700; color:#2C2735; margin:0;">Book Details</h4>
+                    <button type="button" class="close text-plum-dark" data-dismiss="modal" aria-label="Close" style="border:none; background:none; font-size:1.5rem; color:#2C2735; outline:none; cursor:pointer;">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body p-4" style="padding:24px;">
+                    <div class="row align-items-stretch">
+                        <!-- Book Cover Column -->
+                        <div class="col-12 col-md-4 mb-4 mb-md-0 text-center d-flex flex-column justify-content-between">
+                            <div class="book-modal-cover-container shadow-lg mb-3" style="box-shadow: 0 10px 25px rgba(0,0,0,0.15); border-radius: 12px; overflow: hidden; border: 1px solid rgba(123, 94, 167, 0.1);">
+                                <img class="img-fluid rounded" src="" id="bookimage" alt="Book cover" style="width:100%; aspect-ratio:2/3; object-fit:cover; border-radius:12px;">
+                            </div>
+                            {% if user.is_authenticated %}
+                            <button id="save-book-button" class="btn w-100 btn-save-later">
+                                <i class="fa-solid fa-bookmark mr-1"></i> Save for Later
+                            </button> 
+                            {% endif %}
+                        </div>
+
+                        <!-- Book Metadata Column -->
+                        <div class="col-12 col-md-8 d-flex flex-column justify-content-between">
+                            <div>
+                                <h3 class="font-sora font-extrabold text-plum-dark" id="booktitle-inner" style="font-family:'Sora',sans-serif; font-weight:800; font-size:1.6rem; color:#2C2735; margin-bottom:4px; line-height:1.3;"></h3>
+                                <p class="text-base text-plum-body italic" style="font-family:'Sora',sans-serif; color:#5C5C7A; font-style:italic; font-size:0.95rem; margin-bottom:12px;">by <span id="bookauthors" class="font-bold" style="font-weight:700;"></span></p>
+                                
+                                <!-- Meta line for Release Year & Rating -->
+                                <div class="d-flex align-items-center flex-wrap mb-3" style="gap:16px;">
+                                    <span class="text-sm font-semibold" id="bookrelease" style="color:#5C5C7A; font-size:0.875rem;"></span>
+                                    <span class="badge badge-warning text-xs font-semibold px-2 py-1" style="background:#F2B705; color:#2C2735; font-size:0.75rem; border-radius:12px;">★ Premium Rec</span>
+                                </div>
+
+                                <!-- Genre Tags Container -->
+                                <div class="mb-3">
+                                    <div id="bookgenres" class="d-flex flex-wrap" style="gap:6px;"></div>
+                                </div>
+
+                                <!-- Synopsis Scrollable Paragraph -->
+                                <div class="mb-3">
+                                    <strong style="font-family:'Sora',sans-serif; font-size:0.9rem; color:#2C2735;">Synopsis:</strong>
+                                    <div class="position-relative mt-1">
+                                        <img id="loading" src="{% static 'mainapp/gif/loading.gif' %}" class="mx-auto" style="width:40px; height:40px; display:block; margin:0 auto;">
+                                        <p id="booksummary" class="text-sm text-plum-body" style="font-family:'Sora',sans-serif; font-size:0.875rem; color:#2C2C3E; line-height:1.6; max-height:160px; overflow-y:auto; padding-right:8px; margin:0; text-align:justify;"></p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Rating action section inside modal -->
+                            <div class="pt-3 border-top" style="border-top:1px solid rgba(123,94,167,0.1); padding-top:12px;">
+                                <span class="d-block text-xs uppercase tracking-wider text-muted font-semibold mb-2" style="font-size:0.7rem; text-transform:uppercase; color:#9B9BB0; font-weight:600; letter-spacing:1px; display:block;">Average Rating</span>
+                                <div class="d-flex align-items-center justify-content-between flex-wrap" style="gap:12px;">
+                                    <div id="bookrating"></div>
+                                    
+                                    {% if user.is_authenticated %}
+                                    <div class="modal-interactive-rate d-flex align-items-center" style="gap:8px;">
+                                        <span class="text-xs font-semibold" style="font-size:0.75rem; color:#5C5C7A;">Rate:</span>
+                                        <div id="modal-rateyo" style="display:inline-block;"></div>
+                                        <button id="modal-rate-submit-btn" class="btn btn-sm btn-gold py-1 px-3" style="background:#F2B705; color:#2C2735; font-family:'Sora',sans-serif; font-weight:700; border-radius:20px; font-size:0.75rem; border:none; cursor:pointer; box-shadow:0 2px 6px rgba(242,183,5,0.2);">Submit</button>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer premium-modal-footer">
+                    <button type="button" class="btn btn-close-modal" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <a href='#top'>
+        <button id="topBtn" title="Go to top"><i class="fa fa-angle-up"></i></button></a>
+    <!-- End boostrap modal -->
+    {% block main %} 
+    {% endblock main %}
+
+   <footer>
+     <div class="container">
+       <div class="row g-4">
+         <div class="col-md-4">
+           <h5>SynthBook</h5>
+           <p style="font-size:0.9rem; line-height:1.7;">
+             An ML-powered Book Recommendation System.<br>
+             Rate books. Discover more. Read better.
+           </p>
+           <div class="social-links mt-3">
+             <a href="https://github.com/Rabin-Mishra/SynthBook" target="_blank">
+               <i class="fab fa-github"></i></a>
+             <a href="https://www.linkedin.com/in/rabin-mishra-3782ba214/" target="_blank">
+               <i class="fab fa-linkedin"></i></a>
+             <a href="https://rabinmishra.com.np/" target="_blank">
+               <i class="fas fa-globe"></i></a>
+           </div>
+         </div>
+         <div class="col-md-4">
+           <h5>Quick Links</h5>
+           <a href="/">Home</a><br>
+           <a href="/explore_books/">Explore</a><br>
+           <a href="/accounts/login/">Login</a><br>
+           <a href="/accounts/signup/">Sign Up</a>
+         </div>
+         <div class="col-md-4">
+           <h5>Contact</h5>
+           <p style="font-size:0.9rem;">
+             <i class="fas fa-envelope me-2"></i>rabin@rabinmishra.com.np
+           </p>
+           <p style="font-size:0.9rem;">
+             <i class="fas fa-globe me-2"></i>
+             <a href="https://rabinmishra.com.np/">rabinmishra.com.np</a>
+           </p>
+         </div>
+       </div>
+       <div class="footer-bottom">
+         &copy; 2025 SynthBook &mdash; Designed &amp; Developed by
+         <a href="https://rabinmishra.com.np/" target="_blank">Rabin Mishra</a>
+         &nbsp;|&nbsp; BE IT, Cosmos College of Management &amp; Technology
+       </div>
+     </div>
+   </footer>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
+    <!-- Rating JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>
+    <!-- Search Bar Script -->
+    <script>
+        // Authentication state checked cleanly for IDE JavaScript engine
+        var IS_AUTHENTICATED = "{{ user.is_authenticated|yesno:'true,false' }}" === "true";
+
+        // clear forms
+        function init() {
+            document.getElementById('bookName').value = "";
+        }
+        $(document).ready(init);
+
+        // get book summary
+        function getsummary(bookid) {
+            $.ajax({
+                data: {
+                    'bookid': bookid,
+                    'csrfmiddlewaretoken': Cookies.get('csrftoken')
+                },
+                dataType: 'json',
+                url: "{% url 'summary_ajax' %}",
+                type: 'POST',
+                success: function(response) {
+                    $('#loading').hide();
+                    $('#booksummary').text(response['booksummary']);
+                },
+                error: function(response) {
+                    console.log(response)
+                }
+            })
+        }
+        // display book boostrap modal when clicked
+        function openModal(obj) {
+            $('#booksummary').text("");
+            $('#loading').show();
+            var bookid = obj.getAttribute('data-bookid');
+            var summary = getsummary(bookid);
+            var bookName = obj.innerHTML;
+            var authors = obj.getAttribute('data-authors');
+            var imageurl = obj.getAttribute('data-imageurl');
+            var averagerating = obj.getAttribute('data-averagerating');
+            $('#booktitle').text(bookName);
+            $('#booktitle-inner').text(bookName);
+            $('#bookauthors').text(authors);
+            $('#bookimage').attr('src', imageurl);
+            $("#bookrating").rateYo({
+                rating: averagerating,
+                readOnly: true
+            });
+            $('#bookModal').modal('show');
+            $('#search-dropdown').empty();
+        }
+
+        // add search results
+        function displayResults(books) {
+            var searchdiv = document.getElementById('search-dropdown');
+            if (books.length == 0 && searchdiv.childElementCount == 0) {
+                var info = document.createElement('a');
+                info.innerHTML = 'No search results match your query';
+                info.setAttribute('href', '#');
+                searchdiv.appendChild(info);
+            } 
+            else if (searchdiv.childElementCount <= 5) {
+                $('#search-dropdown').empty();
+                books.forEach(function(book, index, array) {
+                    var booktoadd = document.createElement('a');
+                    booktoadd.innerHTML = book['original_title'];
+                    booktoadd.setAttribute('data-bookid', book['book_id']);
+                    booktoadd.setAttribute('data-authors', book['authors']);
+                    booktoadd.setAttribute('data-imageurl', book['image_url']);
+                    booktoadd.setAttribute('data-averagerating', book['average_rating']);
+                    booktoadd.setAttribute('href', 'javascript:;');
+                    booktoadd.setAttribute('onclick', 'openModal(this)');
+                    searchdiv.appendChild(booktoadd);
+                });
+            }
+        }
+        // get search results
+
+        function myFunction() {
+            var input = document.getElementById('bookName');
+            var text = input.value.toLowerCase();
+            if (text != '') {
+                $.ajax({
+                    data: {
+                        'bookName': text,
+                        'csrfmiddlewaretoken': Cookies.get('csrftoken')
+                    },
+                    dataType: 'json',
+                    url: "{% url 'search_ajax' %}",
+                    type: 'POST',
+                    success: function(response) {
+                        displayResults(JSON.parse(response['top5_result']));
+                    },
+                    error: function(response) {
+                        console.log(response);
+                    }
+                });
+            } 
+            else
+                $('#search-dropdown').empty();
+        }
+
+        $("#bookName").focus(function() {
+                $('#search-dropdown').show();
+            }).blur(function() {
+                $('#search-dropdown').hide(150);
+            })
+            //for rating a book
+        $(function() {
+
+            $(".rateYo").rateYo({
+                rating: 0,
+                starWidth: "20px",
+                fullStar: true
+            });
+
+        });
+        // when hover over rate
+        function rateStart(obj) {
+            var bookid = obj.getAttribute('data-book-id');
+            $('#button-text-' + bookid).css('display', 'none');
+            $('#rate-' + bookid).css('display', 'block');
+        }
+        // onclick rate
+        function rateBook(obj) {
+            var bookid = obj.getAttribute('data-book-id');
+            var bookrating = $('#rate-' + bookid).rateYo('rating');
+            $('#rating-block-' + bookid).css('transition', 'background-color 2s ease');
+            $('#rating-block-' + bookid).css('background-color', '#29BF12');
+            console.log('#rating-block-' + bookid);
+            $.ajax({
+                data: {
+                    'bookid': bookid,
+                    'bookrating': bookrating,
+                    'csrfmiddlewaretoken': Cookies.get('csrftoken')
+                },
+                dataType: 'json',
+                url: "{% url 'user_rate_book' %}",
+                type: 'POST',
+                success: function(response) {
+
+                },
+                error: function(response) {
+                    console.log(response);
+                }
+            });
+        }
+        // when hover out rate
+        function finishRate(obj) {
+            var bookid = obj.getAttribute('data-book-id');
+            setTimeout(function() {
+                $('#rate-' + bookid).css('display', 'none');
+                $('#button-text-' + bookid).css('display', 'block');
+                $('#rating-block-' + bookid).css('transition', 'background-color 2s ease');
+                $('#rating-block-' + bookid).css('background-color', '#31c2cf');
+            }, 4000);
+        }
+
+        // Retrieve and display book details in Modal
+        function bookDetails(obj) {
+            var bookid = obj.getAttribute('data-book-id');
+            // Clear prior states
+            $('#booksummary').text("");
+            $('#bookgenres').empty();
+            $('#bookrelease').text("");
+            $('#loading').show();
+            
+            $.ajax({
+                data: {
+                    'bookid': bookid,
+                    'csrfmiddlewaretoken': Cookies.get('csrftoken')
+                },
+                dataType: 'json',
+                url: "{% url 'book_details' %}",
+                type: 'POST',
+                success: function(response) {
+                    var book_details = JSON.parse(response['book_details'])[0];
+                    $('#loading').hide();
+                    
+                    var bookName = book_details.original_title;
+                    var authors = book_details.authors;
+                    var imageurl = book_details.image_url;
+                    var averagerating = book_details.average_rating;
+                    var description = book_details.desc || "";
+                    
+                    $('#booktitle').text(bookName);
+                    $('#booktitle-inner').text(bookName);
+                    $('#bookauthors').text(authors);
+                    $('#bookimage').attr('src', imageurl);
+                    
+                    // Parse description for a year starting with 19 or 20, or fallback to deterministic
+                    var releaseYear = (1998 + (parseInt(bookid) % 23));
+                    if (description) {
+                        var match = description.match(/\b(19\d\d|20\d\d)\b/);
+                        if (match) {
+                            releaseYear = match[0];
+                        }
+                    }
+                    $('#bookrelease').text("Published: " + releaseYear);
+                    
+                    // Render dynamic genres as beautiful badge chips
+                    var genresContainer = $('#bookgenres');
+                    genresContainer.empty();
+                    if (book_details.genre) {
+                        var genresList = book_details.genre.split(',');
+                        genresList.forEach(function(g) {
+                            g = g.trim();
+                            if (g) {
+                                var badge = $('<span class="badge mr-1 mb-1 px-3 py-1.5" style="background:rgba(123,94,167,0.1); color:#7B5EA7; border:1px solid rgba(123,94,167,0.15); border-radius:15px; font-size:0.75rem; font-weight:600; text-transform: capitalize;"></span>').text(g);
+                                genresContainer.append(badge);
+                            }
+                        });
+                    }
+                    
+                    // Render description/synopsis
+                    if (description) {
+                        $('#booksummary').text(description);
+                    } else {
+                        // fetch summary via AJAX if desc is empty
+                        getsummary(bookid);
+                    }
+                    
+                    // Initialize or update Read-Only rating
+                    $("#bookrating").rateYo({
+                        rating: averagerating,
+                        readOnly: true,
+                        starWidth: "20px",
+                        ratedFill: "#F2B705"
+                    });
+                    
+                    // Initialize or update interactive user rating in modal
+                    if (IS_AUTHENTICATED) {
+                        $("#modal-rateyo").rateYo({
+                            rating: 0,
+                            starWidth: "16px",
+                            fullStar: true,
+                            ratedFill: "#F2B705"
+                        });
+                        
+                        // Setup dynamic click binding for rating submit button inside modal
+                        $('#modal-rate-submit-btn').off('click').on('click', function() {
+                            var userRating = $("#modal-rateyo").rateYo("rating");
+                            if (userRating === 0) {
+                                alert("Please select a rating before submitting!");
+                                return;
+                            }
+                            
+                            $('#modal-rate-submit-btn').text('Submitting...').prop('disabled', true);
+                            $.ajax({
+                                data: {
+                                    'bookid': bookid,
+                                    'bookrating': userRating,
+                                    'csrfmiddlewaretoken': Cookies.get('csrftoken')
+                                },
+                                dataType: 'json',
+                                url: "{% url 'user_rate_book' %}",
+                                type: 'POST',
+                                success: function(response) {
+                                    $('#modal-rate-submit-btn').text('Submitted!').css('background', '#29BF12').css('color', '#fff');
+                                    setTimeout(function() {
+                                        $('#modal-rate-submit-btn').text('Submit').css('background', '#F2B705').css('color', '#2C2735').prop('disabled', false);
+                                    }, 2500);
+                                },
+                                error: function(response) {
+                                    console.log(response);
+                                    $('#modal-rate-submit-btn').text('Submit').prop('disabled', false);
+                                }
+                            });
+                        });
+                    }
+                    
+                    $('#bookModal').modal('show');
+                    $('#search-dropdown').empty();
+                    
+                    // Setup Save for Later click binding
+                    $('#save-book-button').off('click').on('click', function() {
+                        $('#save-book-button').css('transition', 'background-color 2s ease');
+                        $('#save-book-button').css('background-color', '#E07A5F');
+                        $('#save-book-button').html('<i class="fa-solid fa-check mr-1"></i> Saved !');
+                        setTimeout(function() {
+                            $('#save-book-button').html('<i class="fa-solid fa-bookmark mr-1"></i> Save for Later');
+                            $('#save-book-button').css('transition', 'background-color 2s ease');
+                            $('#save-book-button').css('background-color', '#7B5EA7');
+                        }, 3000);
+                        $.ajax({
+                            data: {
+                                'bookid': bookid,
+                                'csrfmiddlewaretoken': Cookies.get('csrftoken')
+                            },
+                            dataType: 'json',
+                            url: "{% url 'save_book' %}",
+                            type: 'POST',
+                            success: function(response) {
+                            },
+                            error: function(response) {
+                                console.log(response);
+                            }
+                        });
+                    });
+                },
+                error: function(response) {
+                    console.log(response);
+                    $('#loading').hide();
+                }
+            });
+        }
+
+        document.body.addEventListener('scroll', ()=>{
+            if (document.body.scrollTop > 0 || document.documentElement.scrollTop > 0) {
+                document.getElementById("topBtn").style.display = "block";
+            } else {
+                document.getElementById("topBtn").style.display = "none";
+            }
+        });
+    </script>
+    <!-- End Search Bar Script -->
+    {% block script %} 
+    {% endblock script %}
+</body>
+
+</html>

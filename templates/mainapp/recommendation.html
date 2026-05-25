@@ -1,0 +1,95 @@
+{% extends "mainapp/layout.html" %}
+{% load static %}
+
+{% block title  %}
+Personalized Read
+{% endblock title %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'mainapp/css/recommendation.css' %}">
+{% endblock head %}
+
+
+{% block main %}
+
+<!-- Welcome Banner -->
+<div class="welcome-banner text-center py-5">
+    <h1 style="font-family: 'Lobster', cursive; color: var(--accent-primary); font-size: 3rem;">Here are your personalized picks, {{ user.username }}! 🎉</h1>
+    <p style="color: var(--text-medium); max-width: 600px; margin: 10px auto 0; font-size: 1.1rem; font-family: 'Sora', sans-serif;">Our recommendation algorithms curated these custom book suggestions tailored specifically to your rating taste.</p>
+</div>
+
+<div class="container my-5 recommendation-container">
+    
+    <!-- SECTION 1: Picked Just For You (Collaborative Filtering — Top 6) -->
+    <h3 class="section-heading mt-2">Picked Just For You</h3>
+    <p class="text-center text-muted mb-5" style="font-family: 'Sora', sans-serif;">Collaborative filtering recommendations based on matching raw book vectors against community scores</p>
+    
+    <div class="row g-4 mb-5">
+        {% for book in books|slice:"3:9" %}
+        <div class="col-12 col-md-6 col-lg-4 d-flex align-items-stretch">
+            <div class="book-cell w-100 mb-4">
+                <div class="book-img">
+                    <img src="{{book.image_url}}" alt="book-image" class="book-photo cover-img">
+                </div>
+                <div class="book-content">
+                    <div class="book-title">{{book.original_title}}</div>
+                    <div class="book-author">by {{book.authors|truncatechars:20}}</div>
+                    <span class="book-voters"><i class="fa fa-star" style="color: var(--accent-gold);"></i> {{book.average_rating}} rating</span>
+                    
+                    <div class="mt-2">
+                        <a href="javascript:;" onclick='bookDetails(this)' class="btn more-details w-100" data-book-id="{{ book.book_id }}">More Details</a>
+                        {% if user.is_authenticated %}
+                        <div class='rating-block w-100' id='rating-block-{{ book.book_id }}' onmouseover="rateStart(this)" onclick='rateBook(this)' onmouseout='finishRate(this)' data-book-id="{{ book.book_id }}">
+                            <div id='button-text-{{ book.book_id }}'>Rate <i class="fa fa-heart" style="color:red"></i> This Book</div>
+                            <div class='rateYo' id='rate-{{ book.book_id }}'></div>
+                        </div>
+                        {% else %}
+                        <div class='rating-block w-100 btn' onclick="location.href='{% url 'account_signup' %}'">
+                            <div id='button-text'>Rate <i class="fa fa-heart" style="color:red"></i> This Book</div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- SECTION 2: Because You Liked... (Content-Based — Top 3) -->
+    <h3 class="section-heading mt-5">Because You Liked...</h3>
+    <p class="text-center text-muted mb-5" style="font-family: 'Sora', sans-serif;">Content-based filtering recommendations tracking metadata similarities, authors, and genres</p>
+    
+    <div class="row g-4">
+        {% for book in books|slice:":3" %}
+        <div class="col-12 col-md-6 col-lg-4 d-flex align-items-stretch">
+            <div class="book-cell w-100 mb-4">
+                <div class="book-img">
+                    <img src="{{book.image_url}}" alt="book-image" class="book-photo cover-img">
+                </div>
+                <div class="book-content">
+                    <div class="book-title">{{book.original_title}}</div>
+                    <div class="book-author">by {{book.authors|truncatechars:20}}</div>
+                    <span class="book-voters"><i class="fa fa-star" style="color: var(--accent-gold);"></i> {{book.average_rating}} rating</span>
+                    
+                    <div class="mt-2">
+                        <a href="javascript:;" onclick='bookDetails(this)' class="btn more-details w-100" data-book-id="{{ book.book_id }}">More Details</a>
+                        {% if user.is_authenticated %}
+                        <div class='rating-block w-100' id='rating-block-{{ book.book_id }}' onmouseover="rateStart(this)" onclick='rateBook(this)' onmouseout='finishRate(this)' data-book-id="{{ book.book_id }}">
+                            <div id='button-text-{{ book.book_id }}'>Rate <i class="fa fa-heart" style="color:red"></i> This Book</div>
+                            <div class='rateYo' id='rate-{{ book.book_id }}'></div>
+                        </div>
+                        {% else %}
+                        <div class='rating-block w-100 btn' onclick="location.href='{% url 'account_signup' %}'">
+                            <div id='button-text'>Rate <i class="fa fa-heart" style="color:red"></i> This Book</div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+</div>
+
+{% endblock main %}

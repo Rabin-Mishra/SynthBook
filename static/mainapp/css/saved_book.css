@@ -1,0 +1,81 @@
+/* ===== SAVED BOOKS PAGE STYLES ===== */
+
+/* Page Header */
+.saved-header {
+  background: var(--bg-secondary, #F0EBE3);
+  border-bottom: 3px solid var(--accent-gold, #F2B705);
+  padding: 48px 24px;
+}
+
+/* Empty State Container */
+.empty-state {
+  text-align: center;
+  padding: 80px 20px;
+  background: var(--card-bg, #FFFFFF);
+  border-radius: var(--border-radius, 12px);
+  box-shadow: var(--card-shadow, 0 4px 20px rgba(123, 94, 167, 0.12));
+  max-width: 600px;
+  margin: 60px auto;
+}
+
+.empty-icon {
+  font-size: 5rem;
+  margin-bottom: 20px;
+  display: block;
+}
+
+.empty-title {
+  font-family: 'Sora', sans-serif;
+  font-weight: 600;
+  color: var(--text-dark, #2C2C3E);
+  font-size: 1.5rem;
+  margin-bottom: 12px;
+}
+
+.empty-message {
+  font-family: 'Sora', sans-serif;
+  color: var(--text-medium, #5C5C7A);
+  font-size: 1.05rem;
+  margin-bottom: 30px;
+}
+
+/* Unified Rating Styles consistency */
+.rating-block {
+  text-align: center;
+  background-color: var(--accent-primary) !important;
+  color: #fff !important;
+  font-weight: 600;
+  font-size: 13px;
+  border-radius: 20px;
+  padding: 8px 12px;
+  transition: var(--transition, all 0.3s ease);
+  cursor: pointer;
+}
+
+.rating-block:hover {
+  background-color: var(--accent-secondary) !important;
+  transform: translateY(-2px);
+}
+
+.rateYo {
+  margin: 6px auto 0;
+  display: none;
+}
+
+/* Remove button */
+.remove {
+  background-color: #e63946 !important;
+  color: #fff !important;
+  border-radius: 20px;
+  font-size: 0.85rem !important;
+  font-weight: 600;
+  padding: 8px 16px !important;
+  border: none;
+  transition: var(--transition, all 0.3s ease);
+}
+
+.remove:hover {
+  background-color: #d62828 !important;
+  color: #fff !important;
+  transform: translateY(-2px);
+}

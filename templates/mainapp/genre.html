@@ -1,0 +1,87 @@
+{% extends "mainapp/layout.html" %}
+{% load static %}
+
+{% block title  %}
+Genre
+{% endblock title %} 
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'mainapp/css/genre.css' %}">
+{% endblock head %}
+
+{% block main %}
+
+<!-- Breadcrumb Navigation -->
+<nav aria-label="breadcrumb" class="container mt-4" style="max-width:95%;">
+    <ol class="breadcrumb" style="background: transparent; padding: 12px 0; margin-bottom: 0;">
+        <li class="breadcrumb-item"><a href="/" style="color: var(--accent-primary, #7B5EA7); text-decoration: none; font-weight: 500; font-family: 'Sora', sans-serif;">Home</a></li>
+        <li class="breadcrumb-item"><a href="/explore_books/" style="color: var(--accent-primary, #7B5EA7); text-decoration: none; font-weight: 500; font-family: 'Sora', sans-serif;">Genres</a></li>
+        <li class="breadcrumb-item active" aria-current="page" style="color: var(--text-medium, #5C5C7A); font-weight: 600; font-family: 'Sora', sans-serif;">{{ genre }}</li>
+    </ol>
+</nav>
+
+<!-- Back Button -->
+<div class="container mb-2" style="max-width:95%;">
+    <a href="/" class="btn back-btn">
+        <i class="fa fa-arrow-left"></i> Back to Home
+    </a>
+</div>
+
+<!-- Large Genre Heading -->
+<div class="genre-header text-center my-4">
+    <h1 class="display-4" style="font-family: 'Lobster', cursive; color: var(--accent-primary, #7B5EA7); font-size: 3.5rem;">{{ genre }} Books</h1>
+    <p style="font-family: 'Sora', sans-serif; color: var(--text-medium, #5C5C7A); font-size: 1.1rem; margin-top: 10px; max-width:600px; margin-left:auto; margin-right:auto; line-height:1.6;">Browse our top-rated recommendations in the {{ genre }} category.</p>
+</div>
+
+<!-- Responsive Book Grid (Full Screen Utilization) -->
+<div class="genre-container fade-in-section">
+    <div class="row g-4 justify-content-center">
+        {% for book in genre_topbook %}
+        <div class="col-6 col-sm-4 col-md-3 col-xl-2 d-flex align-items-stretch" style="padding:8px;">
+            <div class="book-card">
+                <div class="book-card-cover-wrapper">
+                    <img class="book-card-cover" src="{{book.image_url}}" alt="{{ book.original_title }} cover">
+                    <div class="book-card-hover-overlay">
+                        <span class="book-card-hover-badge">View Cover</span>
+                    </div>
+                </div>
+                <div class="book-card-details">
+                    <div>
+                        <h5 class="book-card-title" title="{{ book.original_title }}">{{ book.original_title }}</h5>
+                        <p class="book-card-author">by {{ book.authors|truncatechars:25 }}</p>
+                        
+                        <!-- Stars -->
+                        <div class="book-card-rating">
+                          <i class="fa-solid fa-star"></i>
+                          <i class="fa-solid fa-star"></i>
+                          <i class="fa-solid fa-star"></i>
+                          <i class="fa-solid fa-star"></i>
+                          <i class="fa-solid fa-star-half-stroke"></i>
+                          <span>4.7</span>
+                        </div>
+                    </div>
+                    
+                    <div class="book-card-actions">
+                        <a href="javascript:;" onclick='bookDetails(this)' class="book-card-details-btn" data-book-id="{{ book.book_id }}">View Details</a>
+                        
+                        {% if user.is_authenticated %}
+                        <button class="book-card-rate-btn" id="rating-block-{{ book.book_id }}" onmouseover="rateStart(this)" onclick='rateBook(this)' onmouseout='finishRate(this)' data-book-id="{{ book.book_id }}">
+                            <span id='button-text-{{ book.book_id }}' class="d-inline-flex align-items-center gap-1">
+                              Rate <i class="fa-solid fa-heart" style="color:#ffffff"></i> This Book
+                            </span>
+                            <div class='rateYo' id='rate-{{ book.book_id }}'></div>
+                        </button>
+                        {% else %}
+                        <a href="{% url 'account_signup' %}" class="book-card-rate-btn">
+                            Rate <i class="fa-solid fa-heart" style="color:#ffffff"></i> This Book
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock main %}

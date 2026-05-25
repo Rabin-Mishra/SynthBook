@@ -1,0 +1,91 @@
+{% extends "mainapp/layout.html" %}
+{% load static %}
+
+{% block title %}
+Explore
+{% endblock title %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'mainapp/css/explore.css' %}">
+{% endblock head %}
+
+{% block main %}
+
+<!-- CSS Loading Spinner -->
+<div id="explore-spinner" class="spinner-overlay">
+    <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem; color: var(--accent-primary) !important;">
+        <span class="sr-only">Loading...</span>
+    </div>
+</div>
+
+<!-- Explore Page Header -->
+<div class="explore-header text-center">
+    <h1>Explore Books</h1>
+    <p>Discover your next favorite read from our extensive collection of 10,000+ books</p>
+</div>
+
+<!-- Responsive Book Grid (Full Screen Utilization) -->
+<div class="explore-container fade-in-section">
+    <div class="row g-4 justify-content-center">
+        {% for book in book %}
+        <div class="col-6 col-sm-4 col-md-3 col-xl-2 d-flex align-items-stretch" style="padding:8px;">
+            <div class="book-card">
+                <div class="book-card-cover-wrapper">
+                    <img class="book-card-cover" src="{{book.image_url}}" alt="{{ book.original_title }} cover">
+                    <div class="book-card-hover-overlay">
+                        <span class="book-card-hover-badge">View Cover</span>
+                    </div>
+                </div>
+                <div class="book-card-details">
+                    <div>
+                        <h5 class="book-card-title" title="{{ book.original_title }}">{{ book.original_title }}</h5>
+                        <p class="book-card-author">by {{ book.authors|truncatechars:25 }}</p>
+                        
+                        <!-- Stars -->
+                        <div class="book-card-rating">
+                          <i class="fa-solid fa-star"></i>
+                          <i class="fa-solid fa-star"></i>
+                          <i class="fa-solid fa-star"></i>
+                          <i class="fa-solid fa-star"></i>
+                          <i class="fa-solid fa-star-half-stroke"></i>
+                          <span>4.7</span>
+                        </div>
+                    </div>
+                    
+                    <div class="book-card-actions">
+                        <a href="javascript:;" onclick='bookDetails(this)' class="book-card-details-btn" data-book-id="{{ book.book_id }}">View Details</a>
+                        
+                        {% if user.is_authenticated %}
+                        <button class="book-card-rate-btn" id="rating-block-{{ book.book_id }}" onmouseover="rateStart(this)" onclick='rateBook(this)' onmouseout='finishRate(this)' data-book-id="{{ book.book_id }}">
+                            <span id='button-text-{{ book.book_id }}' class="d-inline-flex align-items-center gap-1">
+                              Rate <i class="fa-solid fa-heart" style="color:#ffffff"></i> This Book
+                            </span>
+                            <div class='rateYo' id='rate-{{ book.book_id }}'></div>
+                        </button>
+                        {% else %}
+                        <a href="{% url 'account_signup' %}" class="book-card-rate-btn">
+                            Rate <i class="fa-solid fa-heart" style="color:#ffffff"></i> This Book
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<script>
+    // Hide loading spinner on page window onload
+    window.addEventListener('load', function() {
+        var spinner = document.getElementById('explore-spinner');
+        if (spinner) {
+            spinner.style.opacity = '0';
+            setTimeout(function() {
+                spinner.style.display = 'none';
+            }, 300);
+        }
+    });
+</script>
+
+{% endblock main %}
