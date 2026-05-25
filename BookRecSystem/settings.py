@@ -35,11 +35,15 @@ ALLOWED_HOSTS = [
     "localhost",
     ".railway.app",
     ".up.railway.app",
+    ".onrender.com",
+    "synthbook.onrender.com",
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     "https://*.railway.app",
     "https://*.up.railway.app",
+    "https://*.onrender.com",
+    "https://synthbook.onrender.com",
 ]
 
 
