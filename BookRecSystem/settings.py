@@ -31,15 +31,15 @@ DEBUG = str(os.environ.get("DEBUG", True)) == "True"
 PROD_ENV = str(os.environ.get("PROD_ENV", False)) == "True"
 
 ALLOWED_HOSTS = [
-    "synthbook.up.railway.app",
-    "synthbook.up.railway.app",
     "127.0.0.1",
     "localhost",
+    ".railway.app",
+    ".up.railway.app",
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://synthbook.up.railway.app",
-    "https://synthbook.up.railway.app",
+    "https://*.railway.app",
+    "https://*.up.railway.app",
 ]
 
 

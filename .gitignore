@@ -132,3 +132,13 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Railway & Local Deployments
+venv/
+__pycache__/
+*.pyc
+db.sqlite3
+staticfiles/
+.env
+*.log
+media/
